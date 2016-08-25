@@ -171,7 +171,7 @@ Returns: uint8_t setLORA state
 uint8_t SX1272::ON()
 {
 	uint8_t state = 2;
-
+	printf("address : %d \n", NETWORK_ID << 25 | NETWORK_ADDRESS);
 #if (SX1272_debug_mode > 1)
 	printf("\n");
 	printf("Starting 'ON'\n");
