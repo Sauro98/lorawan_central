@@ -4291,7 +4291,6 @@ boolean	SX1272::availableData(uint16_t wait)
 		printf("## Checking destination ##\n");
 #endif
 		// modified by Ivano loop through all subnets
-		printf("Source is : %04x \n",_destination);
 		bool found = false;
 		for (int a = 0; a < nodes_index; a++) { //loop through all nodes to see if the packet is from one of them
 			if (_destination == nodes[a]) {
@@ -5515,9 +5514,7 @@ uint8_t SX1272::sendPacketTimeout(uint32_t dest, uint8_t *payload, uint16_t leng
 	destination_subnet = dest;
 
 	bool found = false;
-	printf("current destination : %04x %04x\n", destination_subnet, dest);
 	for (int a = 0; a < nodes_index; a++) {
-		printf("confronting with %04x\n",nodes[a]);
 		if (destination_subnet == nodes[a]) {
 			found = true;
 		}
@@ -5776,9 +5773,7 @@ uint8_t SX1272::sendPacketTimeoutACK(uint32_t dest, uint8_t *payload, uint16_t l
 #ifdef W_REQUESTED_ACK
 	_requestACK = 1;
 #endif
-	printf("sending packet ack :: send packet timeut -- entering\n");
 	state = sendPacketTimeout(dest, payload, length16, wait);	// Sending packet to 'dest' destination
-	printf("state now : %d\n",state);
 	if (state == 0)
 	{
 		state = receive();	// Setting Rx mode to wait an ACK
