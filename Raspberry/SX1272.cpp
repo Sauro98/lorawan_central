@@ -3703,7 +3703,7 @@ uint8_t SX1272::setACK()
 		ACK.fCtrl = PKT_FCTRL_ACK;
 		ACK.type = PKT_TYPE_NO_ACK;
 		//Modificato da Ivano 18/08/2016 ora il dst è a 32 bit
-		ACK.src = NETWORK_ID << 25 | MID(packet_received.src, 0, 25);//Ivano : so that the receiver knows it's for him 
+		ACK.src = packet_received.src;//Ivano : so that the receiver knows it's for him 
 																	 //Added by Ivano 24/08/2016
 		uint8_t addr = MID(packet_received.src, 0, 25);
 		Comando c = getFirstCommandForDevice(addr);
@@ -5192,7 +5192,9 @@ uint8_t SX1272::setPacket(uint8_t dest, uint8_t *payload)
 									//MAC PAYLOAD//
 									//--FHDR--//
 									//DevAddress
-	packet_sent.src = NETWORK_ID << 25 | NETWORK_ADDRESS;
+									//Changed by Ivano 25/08/2016
+									//send as a part of the subnet
+	packet_sent.src = MID(destination_subnet, 25, 32) << 25 | NETWORK_ADDRESS;
 	//Fctrl
 	packet_sent.fCtrl = PKT_FCTRL_DATA; // è un pacchetto di dati	
 	packet_sent.packnum = _packetNumber;//Fcount

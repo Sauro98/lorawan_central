@@ -622,12 +622,12 @@ printf("\n");
 
 
 
-printf("----------Starting, add all subnodes----------");
+printf("----------Starting, add all subnodes----------\n");
 //Added by Ivano 225/08/2016
 //Aggiungere qui i nodi voluti alla lista
 //Per ora aggiungo solo quello della pi2
 sx1272.addNode(/*NETWORK_ID*/0x4D << 25 | /*Network address*/ 0xC);
-printf("----------Nodes added-------------------------");
+printf("----------Nodes added-------------------------\n");
 }
 
 void CarrierSense() {
