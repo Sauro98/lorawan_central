@@ -5515,9 +5515,12 @@ uint8_t SX1272::sendPacketTimeout(uint32_t dest, uint8_t *payload, uint16_t leng
 	destination_subnet = dest;
 
 	bool found = false;
+	printf("current destination : %04x %04x\n", destination_subnet, dest);
 	for (int a = 0; a < nodes_index; a++) {
-		if (destination_subnet == nodes[nodes_index])
+		printf("confronting with %04x\n",nodes[a]);
+		if (destination_subnet == nodes[a]) {
 			found = true;
+		}
 	}
 
 	if (!found)
