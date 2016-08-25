@@ -345,11 +345,12 @@ const uint8_t INCORRECT_PACKET = 1;
 #define PKT_TYPE_REQUEST_ACK 0x80
 #define PKT_TYPE_NO_ACK 0x40
 
-#define NETWORK_ID 0x4D
-#define NETWORK_ADDRESS 0xC
+#define NETWORK_ID 0x32
+#define NETWORK_ADDRESS 0x00
 
 #define F_PORT 10
 //
+
 
 
 //! Structure :
@@ -494,6 +495,7 @@ public:
 #ifdef W_REQUESTED_ACK
 		_requestACK = 0;
 		indice_comandi = 0;
+		nodes_index = 0;
 #endif
 #ifdef W_NET_KEY
 		_my_netkey[0] = net_key_0;
@@ -1042,7 +1044,7 @@ public:
 	\param uint16_t wait : time to wait.
 	\return '0' on success, '1' otherwise
 	*/
-	uint8_t sendPacketTimeout(uint8_t dest, uint8_t *payload, uint16_t length, uint16_t wait);
+	uint8_t sendPacketTimeout(uint32_t dest, uint8_t *payload, uint16_t length, uint16_t wait);
 
 	//! It sends the packet wich payload is a parameter before MAX_TIMEOUT, and replies with ACK.
 	/*!
@@ -1095,7 +1097,7 @@ public:
 	\param uint16_t wait : time to wait to send the packet.
 	\return '0' on success, '1' otherwise
 	*/
-	uint8_t sendPacketTimeoutACK(uint8_t dest, uint8_t *payload, uint16_t length, uint16_t wait);
+	uint8_t sendPacketTimeoutACK(uint32_t dest, uint8_t *payload, uint16_t length, uint16_t wait);
 
 	//! It sets the destination of a packet.
 	/*!
@@ -1140,58 +1142,7 @@ public:
 	*/
 	uint8_t getACK(uint16_t wait);
 
-	//! It sends a packet, waits to receive an ACK and updates the _retries value, before ending MAX_TIMEOUT time.
-	/*!
-	\param uint8_t dest : packet destination.
-	\param char *payload : packet payload.
-	\return '0' on success, '1' otherwise
-	*/
-	uint8_t sendPacketMAXTimeoutACKRetries(uint8_t dest, char *payload);
-
-	//! It sends a packet, waits to receive an ACK and updates the _retries value, before ending MAX_TIMEOUT time.
-	/*!
-	\param uint8_t dest : packet destination.
-	\param uint8_t *payload : packet payload.
-	\param uint16_t length : payload buffer length.
-	\return '0' on success, '1' otherwise
-	*/
-	uint8_t sendPacketMAXTimeoutACKRetries(uint8_t dest, uint8_t *payload, uint16_t length);
-
-	//! It sends a packet, waits to receive an ACK and updates the _retries value.
-	/*!
-	\param uint8_t dest : packet destination.
-	\param char *payload : packet payload.
-	\return '0' on success, '1' otherwise
-	*/
-	uint8_t sendPacketTimeoutACKRetries(uint8_t dest, char *payload);
-
-	//! It sends a packet, waits to receive an ACK and updates the _retries value.
-	/*!
-	\param uint8_t dest : packet destination.
-	\param uint8_t *payload : packet payload.
-	\param uint16_t length : payload buffer length.
-	\return '0' on success, '1' otherwise
-	*/
-	uint8_t sendPacketTimeoutACKRetries(uint8_t dest, uint8_t *payload, uint16_t length);
-
-	//! It sends a packet, waits to receive an ACK and updates the _retries value, before ending 'wait' time.
-	/*!
-	\param uint8_t dest : packet destination.
-	\param char *payload : packet payload.
-	\param uint16_t wait : time to wait while trying to send the packet.
-	\return '0' on success, '1' otherwise
-	*/
-	uint8_t sendPacketTimeoutACKRetries(uint8_t dest, char *payload, uint16_t wait);
-
-	//! It sends a packet, waits to receive an ACK and updates the _retries value, before ending 'wait' time.
-	/*!
-	\param uint8_t dest : packet destination.
-	\param uint8_t *payload : packet payload.
-	\param uint16_t length : payload buffer length.
-	\param uint16_t wait : time to wait while trying to send the packet.
-	\return '0' on success, '1' otherwise
-	*/
-	uint8_t sendPacketTimeoutACKRetries(uint8_t dest, uint8_t *payload, uint16_t length, uint16_t wait);
+	
 
 	//! It gets the internal temperature of the module.
 	/*!
@@ -1199,6 +1150,9 @@ public:
 	\return '0' on success, '1' otherwise
 	*/
 	uint8_t getTemp();
+	//!Added by Ivano 25/08/2016
+	void addNode(uint32_t node);
+
 	// added by C. Pham
 	void setPacketType(uint8_t type);
 	void RxChainCalibration();
@@ -1233,6 +1187,12 @@ public:
 	void deleteCommand(int index);
 	Comando getFirstCommandForDevice(uint8_t address);
 
+	//!Added by Ivano 25/08/2016
+	//!Il raspberry centrale deve interfacciarsi con più reti, ma solo quelle registrate a lui in modo da non avere pacchetti doppi
+	//!I primi 25 bit sono di networkk address, quelli da 25 a 32 di network id
+	uint32_t nodes[256]; //I nodi raspberry delle sottoreti
+	int nodes_index;//Il numero di sottoreti presenti
+	uint32_t destination_subnet;
 
 	// SX1272 or SX1276?
 	uint8_t _board;

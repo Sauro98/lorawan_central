@@ -124,8 +124,19 @@ Comando SX1272::getFirstCommandForDevice(uint8_t address) {
 
 	return Comando(0, 'w'); //Se l'indirizzo è 0 e il comando è 'w' (wrong) allora vuol dire che non sono stati trovati comandi per il dispositivo
 }
+//Added by Ivano 25/08/2016
+void SX1272::addNode(uint32_t node) {
+	for (int a = 0; a < nodes_index; a++) {
+		if (nodes[a] == node) {
+			pritnf("#Warn: node already registered \n");
+			return;
+		}
+	}
+	nodes[nodes_index] = node;
+	nodes_index++;
 
-
+	printf("#Success: subnet added %04x \n",MID(node,25,32));
+}
 
 void SX1272::RxChainCalibration()
 {
@@ -4279,8 +4290,14 @@ boolean	SX1272::availableData(uint16_t wait)
 #if (SX1272_debug_mode > 0)
 		printf("## Checking destination ##\n");
 #endif
-		// modified by Ivano
-		if (MID(_destination, 25, 32) == NETWORK_ID)
+		// modified by Ivano loop through all subnets
+		bool found = false;
+		for (int a = 0; a < nodes_index; a++) { //loop through all nodes to see if the packet is from one of them
+			if (_destination == nodes[a]) {
+				found = true;
+			}
+		}
+		if (found)
 
 		{ // LoRa or FSK mode
 			forme = true;
@@ -5074,7 +5091,10 @@ uint8_t SX1272::setPacket(uint8_t dest, char *payload)
 									//MAC PAYLOAD//
 									//--FHDR--//
 									//DevAddress
-	packet_sent.src = NETWORK_ID << 25 | NETWORK_ADDRESS;
+	//Changed by Ivano 25/08/2016
+	//send as a part of the subnet
+	packet_sent.src = MID(destination_subnet,25,32) << 25 | NETWORK_ADDRESS;
+
 	//Fctrl
 	packet_sent.fCtrl = PKT_FCTRL_DATA; // è un pacchetto di dati	
 	packet_sent.packnum = _packetNumber;//Fcount
@@ -5472,7 +5492,7 @@ state = 2  --> The command has not been executed
 state = 1  --> There has been an error while executing the command
 state = 0  --> The command has been executed with no errors
 */
-uint8_t SX1272::sendPacketTimeout(uint8_t dest, uint8_t *payload, uint16_t length16, uint16_t wait)
+uint8_t SX1272::sendPacketTimeout(uint32_t dest, uint8_t *payload, uint16_t length16, uint16_t wait)
 {
 	uint8_t state = 2;
 	uint8_t state_f = 2;
@@ -5486,8 +5506,21 @@ uint8_t SX1272::sendPacketTimeout(uint8_t dest, uint8_t *payload, uint16_t lengt
 	Serial.println("Starting 'sendPacketTimeout'");
 #endif
 
-	state = truncPayload(length16);
+	//Added by Ivano 25/08/2016
+	//Controlla che il pacchetto che deve inviare sia effettivamente per una delle sue sottoreti
+	destination_subnet = dest;
 
+	bool found = false;
+	for (int a = 0; a < nodes_index; a++) {
+		if (destination_subnet == nodes[nodes_index])
+			found = true;
+	}
+
+	if (!found)
+		return 3;
+
+
+	state = truncPayload(length16);
 
 	if (state == 0)
 	{
@@ -5718,7 +5751,7 @@ state = 2  --> The command has not been executed
 state = 1  --> There has been an error while executing the command
 state = 0  --> The command has been executed with no errors
 */
-uint8_t SX1272::sendPacketTimeoutACK(uint8_t dest, uint8_t *payload, uint16_t length16, uint16_t wait)
+uint8_t SX1272::sendPacketTimeoutACK(uint32_t dest, uint8_t *payload, uint16_t length16, uint16_t wait)
 {
 	uint8_t state = 2;
 	uint8_t state_f = 2;
