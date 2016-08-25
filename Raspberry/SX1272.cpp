@@ -5775,7 +5775,7 @@ uint8_t SX1272::sendPacketTimeoutACK(uint32_t dest, uint8_t *payload, uint16_t l
 #endif
 	printf("sending packet ack :: send packet timeut -- entering\n");
 	state = sendPacketTimeout(dest, payload, length16, wait);	// Sending packet to 'dest' destination
-	pritnf("state now : %d\n",state);
+	printf("state now : %d\n",state);
 	if (state == 0)
 	{
 		state = receive();	// Setting Rx mode to wait an ACK
