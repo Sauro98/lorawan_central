@@ -4294,7 +4294,9 @@ boolean	SX1272::availableData(uint16_t wait)
 		bool found = false;
 		for (int a = 0; a < nodes_index; a++) { //loop through all nodes to see if the packet is from one of them
 			if (MID(_destination,25,32) == MID(nodes[a],25,32)) {
-				found = true;
+				if (MID(_destination,0,25) == 0x00 || MID(_destination, 0, 25) == MID(nodes[a], 0, 25)) {
+					found = true;
+				}
 			}
 		}
 		if (found)
