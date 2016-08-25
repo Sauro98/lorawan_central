@@ -1529,18 +1529,19 @@ void loop(void)
       //sx1272.setPacketType(PKT_TYPE_DATA | PKT_FLAG_DATA_WAPPKEY | PKT_FLAG_DATA_ENCRYPTED);
       
       //sx1272.setPacketType(PKT_TYPE_DATA); 
-        
+
+        //!!!!!!!!!TEMPORARY DESTINATIONS MODIFIED BY IVANO JUST FOR TESTING 25/08/2016!!!!!!!!
       if (forTmpDestAddr>=0) {
         if (withAck)
-          e = sx1272.sendPacketTimeoutACK(forTmpDestAddr, (uint8_t*)(&cmd[i]), pl, 10000);  
+          e = sx1272.sendPacketTimeoutACK(sx1272.nodes[0], (uint8_t*)(&cmd[i]), pl, 10000);  
         else    
-          e = sx1272.sendPacketTimeout(forTmpDestAddr, (uint8_t*)(&cmd[i]), pl, 10000);
+          e = sx1272.sendPacketTimeout(sx1272.nodes[0], (uint8_t*)(&cmd[i]), pl, 10000);
       }
       else {
         if (withAck || withTmpAck)   
-          e = sx1272.sendPacketTimeoutACK(dest_addr, (uint8_t*)(&cmd[i]), pl, 10000);    
+          e = sx1272.sendPacketTimeoutACK(sx1272.nodes[0], (uint8_t*)(&cmd[i]), pl, 10000);
          else 
-          e = sx1272.sendPacketTimeout(dest_addr, (uint8_t*)(&cmd[i]), pl, 10000);
+          e = sx1272.sendPacketTimeout(sx1272.nodes[0], (uint8_t*)(&cmd[i]), pl, 10000);
       }
 
 #ifdef WITH_SEND_LED
