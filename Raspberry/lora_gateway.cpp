@@ -622,9 +622,12 @@ printf("\n");
 
 
 
-//Test by Ivano
-	//sx1272.addCommand(0xB,'H');
-	//sx1272.addCommand(0xB, 'L');
+printf("----------Starting, add all subnodes----------");
+//Added by Ivano 225/08/2016
+//Aggiungere qui i nodi voluti alla lista
+//Per ora aggiungo solo quello della pi2
+sx1272.addNode(/*NETWORK_ID*/0x4D << 25 | /*Network address*/ 0xC);
+printf("----------Nodes added-------------------------");
 }
 
 void CarrierSense() {
@@ -737,11 +740,7 @@ void CarrierSense() {
       
     } while (carrierSenseRetry);  
   }
-  printf("----------Starting, add all subnodes----------");
-  //Added by Ivano 225/08/2016
-  //Aggiungere qui i nodi voluti alla lista
-  //Per ora aggiungo solo quello della pi2
-  sx1272.addNode(/*NETWORK_ID*/0x4D << 25 | /*Network address*/ 0xC);
+
 }
 
 void loop(void)

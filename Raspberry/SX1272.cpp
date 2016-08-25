@@ -128,7 +128,7 @@ Comando SX1272::getFirstCommandForDevice(uint8_t address) {
 void SX1272::addNode(uint32_t node) {
 	for (int a = 0; a < nodes_index; a++) {
 		if (nodes[a] == node) {
-			pritnf("#Warn: node already registered \n");
+			printf("#Warn: node already registered \n");
 			return;
 		}
 	}
