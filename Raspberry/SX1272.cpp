@@ -135,7 +135,7 @@ void SX1272::addNode(uint32_t node) {
 	nodes[nodes_index] = node;
 	nodes_index++;
 
-	printf("#Success: subnet added %04x \n",MID(node,25,32));
+	printf("#Success: sNode added %04x \n",node);
 }
 
 void SX1272::RxChainCalibration()
@@ -4291,6 +4291,7 @@ boolean	SX1272::availableData(uint16_t wait)
 		printf("## Checking destination ##\n");
 #endif
 		// modified by Ivano loop through all subnets
+		printf("Source is : %04x \n",_destination);
 		bool found = false;
 		for (int a = 0; a < nodes_index; a++) { //loop through all nodes to see if the packet is from one of them
 			if (_destination == nodes[a]) {
