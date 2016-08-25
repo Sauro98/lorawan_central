@@ -5835,16 +5835,11 @@ void SX1272::setType(uint8_t type) {
 //Modificato da Ivano 18/08/2016
 uint8_t SX1272::getACK(uint16_t wait)
 {
+	printf("getting ACK\n");
 	uint8_t state = 2;
 	byte value = 0x00;
 	unsigned long previous;
 	boolean a_received = false;
-
-	//#if (SX1272_debug_mode > 1)
-	Serial.println("");
-	Serial.println("Starting 'getACK'");
-	//#endif
-
 	previous = millis();
 
 	if (_modem == LORA)
