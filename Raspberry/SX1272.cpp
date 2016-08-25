@@ -4293,7 +4293,7 @@ boolean	SX1272::availableData(uint16_t wait)
 		// modified by Ivano loop through all subnets
 		bool found = false;
 		for (int a = 0; a < nodes_index; a++) { //loop through all nodes to see if the packet is from one of them
-			if (_destination == nodes[a]) {
+			if (MID(_destination,25,32) == MID(nodes[a]25,32)) {
 				found = true;
 			}
 		}
