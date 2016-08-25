@@ -5904,9 +5904,15 @@ uint8_t SX1272::getACK(uint16_t wait)
 		ACK.data[0] = readRegister(REG_FIFO);
 		ACK.data[1] = readRegister(REG_FIFO);
 		if (ACK.fCtrl == PKT_FCTRL_ACK) {
-
+			//Added by Ivano 25/08/2016
+			bool found = false;
 			// Checking the received ACK
-			if (MID(ACK.src, 25, 32) == NETWORK_ID)
+			for (int a = 0; a < nodes_index; a++) {
+				if (MID(ACK.src, 25, 32) == MID(nodes[a], 25, 32))
+					found = true;
+			}
+
+			if (found)
 			{
 				if (MID(ACK.src, 0, 25) == NETWORK_ADDRESS) {
 					//printf("ACK for me!! %04x %04x \n", MID(ACK.src, 0, 25), NETWORK_ADDRESS);
