@@ -945,7 +945,7 @@ void loop(void)
 		  //param 1 : originalPacket : il pacchetto ricevuto dal lora
 		  //param 2 : _gw_id : l'identificativo del gateway nella rete
 		  //param 3 : _debug : settare a true per vedere i log di debug, a false per nasconderli. Se si omette questo parametro è automaticamente settato a false  
-		  ReceivedPacket packet = ReceivedPacket(sx1272.packet_received, GW_ID, true);
+		  ReceivedPacket packet = ReceivedPacket(sx1272.packet_received, GW_ID, false);
 
 		  //In caso ci servisse inviare comandi al LORA
 		  int a = 0;
