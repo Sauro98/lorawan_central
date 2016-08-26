@@ -134,7 +134,7 @@ std::string ReceivedPacket::generateJSON(){
 		printf("%s \n", buffer);
 	}
 	std::string json = buffer;
-	sprintf(buffer, " \"node\":%d,", gatewatSenderID);
+	sprintf(buffer, " \"node\":%d,", gatewaySenderID);
 	if (debug) {
 		printf("%s \n", buffer);
 	}
