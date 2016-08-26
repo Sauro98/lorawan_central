@@ -46,7 +46,7 @@ ReceivedPacket::ReceivedPacket(pack originalPacket,int _gw_id,bool _debug) {
 	if (debug) {
 		printf("packet lenght : %d\n", 3);
 	}
-	for (int a = 0; a< pl a++) {
+	for (int a = 0; a < pl; a++) {
 		if (debug) {
 			printf("inside for loop copying %d to position %d of data \n", (uint8_t)sx1272.packet_received.data[a+3], a);
 		}
