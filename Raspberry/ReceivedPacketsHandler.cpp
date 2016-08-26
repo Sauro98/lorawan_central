@@ -5,6 +5,7 @@ void ReceivedPacket::printPacket(){
 	strftime(buffer, 26, "%Y:%m:%d %H:%M:%S", receivedTime);
 	printf("\n");
 	printf("--Pacchetto ricevuto il %s\n",buffer);
+	printf("--Mittente gateway #%04x\n",gatewaySenderID);
 	printf("--Mittente arduino #%d, pacchetto #%d\n",arduinoSenderID,packetNumber);
 	printf("--Sensore #%d\n",sensorID);
 	printf("--Contenuto (int):  ");
@@ -29,15 +30,20 @@ ReceivedPacket::ReceivedPacket(pack originalPacket,int _gw_id,bool _debug) {
 	if (debug) {
 		printf("\n----------START OF A NEW PACKET----------\n");
 	}
-	arduinoSenderID = originalPacket.src;
-	packetNumber = originalPacket.packnum;
+	gatewaySenderID = originalPacket.src;
 	gw_id = _gw_id;
 	//salva il timestamp dell'orario di ricezione del pacchetto in formato AAAA-MM-GG OO-MM-SS
 	getTime();
 
 	int a = 0;
-	//il primo byte del pacchetto rappresenta l'id del sensore che hai fatto scattare l''invio del messaggio
+	//il primo byte rappresenta l'id dell'arduino
+	arduinoSenderID = originalPacket.data[a];
+	a++;
+	//il secondo byte del pacchetto rappresenta l'id del sensore che hai fatto scattare l'invio del messaggio
 	sensorID = originalPacket.data[a];
+	a++;
+	//il terzo rappresenta il numero del pacchetto originale
+	packetNumber = originalPacket.data[a];
 	a++;
 	//gli altri byte sono i dati effettivi dei sensori
 	pl = originalPacket.length;

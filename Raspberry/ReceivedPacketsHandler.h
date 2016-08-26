@@ -14,6 +14,7 @@ class ReceivedPacket{
 	public:
 		uint8_t data[244];
 	private:
+		uint32_t gatewaySenderID;
 		uint8_t arduinoSenderID;
 		uint8_t sensorID;
 		struct tm* receivedTime;
