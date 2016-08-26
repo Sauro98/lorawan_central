@@ -5198,7 +5198,6 @@ uint8_t SX1272::setPacket(uint8_t dest, uint8_t *payload)
 									//Changed by Ivano 25/08/2016
 									//send as a part of the subnet
 	packet_sent.src = MID(destination_subnet, 25, 32) << 25 | NETWORK_ADDRESS;
-	printf("src = %04x \n",packet_sent.src);
 	//Fctrl
 	packet_sent.fCtrl = PKT_FCTRL_DATA; // è un pacchetto di dati	
 	packet_sent.packnum = _packetNumber;//Fcount
