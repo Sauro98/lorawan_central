@@ -35,26 +35,22 @@ ReceivedPacket::ReceivedPacket(pack originalPacket,int _gw_id,bool _debug) {
 	//salva il timestamp dell'orario di ricezione del pacchetto in formato AAAA-MM-GG OO-MM-SS
 	getTime();
 
-	int a = 0;
 	//il primo byte rappresenta l'id dell'arduino
-	arduinoSenderID = originalPacket.data[a];
-	a++;
+	arduinoSenderID = originalPacket.data[0];
 	//il secondo byte del pacchetto rappresenta l'id del sensore che hai fatto scattare l'invio del messaggio
-	sensorID = originalPacket.data[a];
-	a++;
+	sensorID = originalPacket.data[1];
 	//il terzo rappresenta il numero del pacchetto originale
-	packetNumber = originalPacket.data[a];
-	a++;
+	packetNumber = originalPacket.data[2];
 	//gli altri byte sono i dati effettivi dei sensori
-	pl = originalPacket.length;
+	pl = originalPacket.length -3;
 	if (debug) {
-		printf("packet lenght : %d\n", originalPacket.length);
+		printf("packet lenght : %d\n", 3);
 	}
-	for (; a< pl + 1 ; a++) {
+	for (int a = 0; a< pl a++) {
 		if (debug) {
-			printf("inside for loop copying %d to position %d of data \n", (uint8_t)sx1272.packet_received.data[a], a - 1);
+			printf("inside for loop copying %d to position %d of data \n", (uint8_t)sx1272.packet_received.data[a+3], a);
 		}
-		data[a - 1] = (uint8_t)originalPacket.data[a];
+		data[a] = (uint8_t)originalPacket.data[a+3];
 	}
 	if (debug) {
 		printf("outside for loop\n");
