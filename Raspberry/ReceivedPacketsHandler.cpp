@@ -34,12 +34,12 @@ ReceivedPacket::ReceivedPacket(pack originalPacket,int _gw_id,bool _debug) {
 	gw_id = _gw_id;
 	//salva il timestamp dell'orario di ricezione del pacchetto in formato AAAA-MM-GG OO-MM-SS
 	getTime();
-	receivedTime->tm_year = payload[3];
-	receivedTime->tm_mon = payload[4];
-	receivedTime->tm_mday = payload[5];
-	receivedTime->tm_hour = payload[6];
-	receivedTime->tm_min = payload[7];
-	receivedTime->tm_sec = payload[8];
+	receivedTime->tm_year = originalPacket.data[3];
+	receivedTime->tm_mon = originalPacket.data[4];
+	receivedTime->tm_mday = originalPacket.data[5];
+	receivedTime->tm_hour = originalPacket.data[6];
+	receivedTime->tm_min = originalPacket.data[7];
+	receivedTime->tm_sec = originalPacket.data[8];
 	//il primo byte rappresenta l'id dell'arduino
 	arduinoSenderID = originalPacket.data[0];
 	//il secondo byte del pacchetto rappresenta l'id del sensore che hai fatto scattare l'invio del messaggio
@@ -47,7 +47,7 @@ ReceivedPacket::ReceivedPacket(pack originalPacket,int _gw_id,bool _debug) {
 	//il terzo rappresenta il numero del pacchetto originale
 	packetNumber = originalPacket.data[2];
 	//gli altri byte sono i dati effettivi dei sensori
-	pl = originalPacket.length -;
+	pl = originalPacket.length -9;
 	if (debug) {
 		printf("packet lenght : %d\n", pl);
 	}
