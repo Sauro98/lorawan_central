@@ -1752,12 +1752,13 @@ bool sendDBContent(){
 		printf("--cycle %d\n",a+1);
 		Json::Value item = rows[a];
 		item.removeMember("_id");
+		std::string id = item.get("id", "invalid").asString();
 		std::string postargs = "data=";
 		printf("about to write\n");
 		postargs.append(writer.write(item));
 		printf("written\n %s\n",postargs.c_str());
 		int res = 0;
-		/*curl = curl_easy_init();
+		curl = curl_easy_init();
 		if (curl) {
 			printf("curl\n");
 			curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.0.31:8084/services/iot/sensor/set-sensor-data");
@@ -1774,10 +1775,10 @@ bool sendDBContent(){
 		else {
 			printf("curl failed \n");
 		}*/
-		/*if (res == 0) {
+		if (res == 0) {
 			printf("packet sent succesfully, time to remove it from database\n");
-			//removeFromDatabase(id);
-		}*/
+			removeFromDatabase(id);
+		}
 
 		printf("--cycle end\n\n");
 	}
