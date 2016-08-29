@@ -1757,7 +1757,7 @@ bool sendDBContent(){
 		printf("about to write\n");
 		postargs.append(writer.write(item));
 		printf("written\n %s\n",postargs.c_str());
-		CURLcode res = 0;
+		CURLcode res;
 		curl = curl_easy_init();
 		if (curl) {
 			printf("curl\n");
