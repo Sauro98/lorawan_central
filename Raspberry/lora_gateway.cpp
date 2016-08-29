@@ -966,7 +966,7 @@ void loop(void)
 			  packet.issueAddToDatabaseCommand();
 		  }
 		  //Added by Ivano 23/08/2016 -- look at this for the code to send the local database rows with lora
-		  if(cmd[1]=='&')
+		 // if(cmd[1]=='&')
 			sendDBContent();
 #if not defined ARDUINO && defined WINPUT
         // if we received something, display again the current input 
