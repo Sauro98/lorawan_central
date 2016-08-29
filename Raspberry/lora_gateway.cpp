@@ -1778,7 +1778,7 @@ bool sendDBContent(){
 		int res = 0;
 		if (curl) {
 			curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.0.31:8084/services/iot/sensor/set-sensor-data");
-			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postargs);
+			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postargs.c_string());
 			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 			res = curl_easy_perform(curl);
@@ -1791,7 +1791,7 @@ bool sendDBContent(){
 		}
 		if (res == 0) {
 			printf("packet sent succesfully, time to remove it from database\n");
-			removeFromDatabase(id);
+			//removeFromDatabase(id);
 		}
 
 		printf("--cycle end\n\n");
