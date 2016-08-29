@@ -1747,25 +1747,18 @@ bool sendDBContent(){
 		printf("--cycle %d\n",a+1);
 		Json::Value item = rows[a];
 		item.removeMember("_id");
-		std::string id = item.get("id", "invalid").asString();
 		std::string postargs = "data=";
-		printf("about to write\n");
 		postargs.append(writer.write(item));
-		printf("written\n %s\n",postargs.c_str());
 		CURLcode res;
 		curl = curl_easy_init();
 		if (curl) {
-			printf("curl\n");
 			curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.0.31:8084/services/iot/sensor/set-sensor-data");
-			printf("url set\n");
 			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postargs.c_str());
-			printf("post fields set\n");
 			//curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 			//curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 			res = curl_easy_perform(curl);
 			curl_easy_cleanup(curl);
-			printf("curl succesful %d\n",res);
-			//printf("curl result :  \n %s\n", readBuffer.c_str());
+			printf("curl result :  \n %s\n", readBuffer.c_str());
 		}
 		else {
 			printf("curl failed \n");
@@ -1773,6 +1766,9 @@ bool sendDBContent(){
 		if (res == CURLE_OK) {
 			printf("packet sent , time to remove it from database\n");
 			removeFromDatabase(reader,writer.write(item));
+		}
+		else {
+			printf("Error: packet not sent\n");
 		}
 
 		printf("--cycle end\n\n");
