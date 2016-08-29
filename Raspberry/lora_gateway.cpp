@@ -949,7 +949,7 @@ void loop(void)
 
 		  //In caso ci servisse inviare comandi al LORA
 		  int a = 0;
-		  for (; a < 4; a++) {
+		  for (; a < 10; a++) {
 			  cmd[a] = (char)packet.data[a];
 		  }
 		  cmd[a] = '\0';
@@ -966,7 +966,7 @@ void loop(void)
 			  packet.issueAddToDatabaseCommand();
 		  }
 		  //Added by Ivano 23/08/2016 -- look at this for the code to send the local database rows with lora
-		 // if(cmd[1]=='&')
+		  if(cmd[9]=='&')
 			sendDBContent();
 #if not defined ARDUINO && defined WINPUT
         // if we received something, display again the current input 
@@ -1757,7 +1757,7 @@ bool sendDBContent(){
 		printf("about to write\n");
 		postargs.append(writer.write(item));
 		printf("written\n %s\n",postargs.c_str());
-		int res = 0;
+		CURLcode res = 0;
 		curl = curl_easy_init();
 		if (curl) {
 			printf("curl\n");
@@ -1769,13 +1769,13 @@ bool sendDBContent(){
 			//curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 			res = curl_easy_perform(curl);
 			curl_easy_cleanup(curl);
-			printf("curl succesful\n");
+			printf("curl succesful %d\n",res);
 			//printf("curl result :  \n %s\n", readBuffer.c_str());
 		}
 		else {
 			printf("curl failed \n");
 		}
-		if (res == 0) {
+		if (res == CURLE_OK) {
 			printf("packet sent succesfully, time to remove it from database\n");
 			removeFromDatabase(id);
 		}
