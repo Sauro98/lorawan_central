@@ -1751,48 +1751,26 @@ bool sendDBContent(){
 	for (int a = 0; a < rows.size(); ++a) {
 		printf("--cycle %d\n",a+1);
 		Json::Value item = rows[a];
-		/*std::string row = writer.write(item);
-		//printf("row : %s \n", row.c_str());
-		int lenght = row.length();
-		if (lenght > 241) {
-			printf("row is too long, it has to be cut\n");
-		}
-		else {
-			printf("row is short enough to be sent : %d\n",lenght);
-
-			CarrierSense();
-
-
-			int res = 3;
-
-			res = sx1272.sendPacketTimeoutACK(0, (uint8_t*)row.c_str(), row.length(), 20000);
-			printf("res : %d \n", res);
-			if (!res) {
-				printf("packet sent and ack received, time to remove it from database\n");
-				removeFromDatabase(reader,row);
-			}
-		}*/
-
 		std::string postargs = "data=";
 		postargs.append(writer.write(item));
 		int res = 0;
 		if (curl) {
 			curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.0.31:8084/services/iot/sensor/set-sensor-data");
 			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postargs.c_str());
-			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+			//curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+			//curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 			res = curl_easy_perform(curl);
 			curl_easy_cleanup(curl);
 			printf("curl succesful\n");
-			printf("curl result :  \n %s\n", readBuffer.c_str());
+			//printf("curl result :  \n %s\n", readBuffer.c_str());
 		}
 		else {
 			printf("curl failed \n");
 		}
-		if (res == 0) {
+		/*if (res == 0) {
 			printf("packet sent succesfully, time to remove it from database\n");
 			//removeFromDatabase(id);
-		}
+		}*/
 
 		printf("--cycle end\n\n");
 	}
