@@ -1752,7 +1752,9 @@ bool sendDBContent(){
 		printf("--cycle %d\n",a+1);
 		Json::Value item = rows[a];
 		std::string postargs = "data=";
+		printf("about to write\n");
 		postargs.append(writer.write(item));
+		printf("written\n");
 		int res = 0;
 		if (curl) {
 			curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.0.31:8084/services/iot/sensor/set-sensor-data");
