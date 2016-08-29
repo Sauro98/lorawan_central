@@ -1756,6 +1756,7 @@ bool sendDBContent(){
 		postargs.append(writer.write(item));
 		printf("written\n %s\n",postargs.c_str());
 		int res = 0;
+		curl = curl_easy_init();
 		if (curl) {
 			printf("curl\n");
 			curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.0.31:8084/services/iot/sensor/set-sensor-data");
