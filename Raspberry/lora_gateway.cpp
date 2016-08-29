@@ -1777,7 +1777,7 @@ bool sendDBContent(){
 		}
 		if (res == CURLE_OK) {
 			printf("packet sent succesfully, time to remove it from database\n");
-			removeFromDatabase(id);
+			removeFromDatabase(reader,item);
 		}
 
 		printf("--cycle end\n\n");
