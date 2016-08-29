@@ -1760,7 +1760,7 @@ bool sendDBContent(){
 			curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.0.31:8084/services/iot/sensor/set-sensor-data");
 			printf("url set\n");
 			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postargs.c_str());
-			printf("post fields set\n"):
+			printf("post fields set\n");
 			//curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 			//curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 			res = curl_easy_perform(curl);
