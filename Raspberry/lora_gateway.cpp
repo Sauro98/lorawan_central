@@ -950,7 +950,7 @@ void loop(void)
 		  //In caso ci servisse inviare comandi al LORA
 		  int a = 0;
 		  for (; a < 4; a++) {
-			  cmd[a] = packet.data[a];
+			  cmd[a] = (char)packet.data[a];
 		  }
 		  cmd[a] = '\0';
 
