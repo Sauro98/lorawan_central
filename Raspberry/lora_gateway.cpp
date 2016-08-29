@@ -958,12 +958,7 @@ void loop(void)
 		  packet.printPacket();
 		  if (cmd[10] == '&') {
 			  sendDBContent();
-		  }else if (packet.isCommandPacket()) {/*qui viene fatto girare il comando nella shell di linux dove inserisce il messaggio appena creato nel database mongodb*/
-			  Comando c = packet.getCommand();
-			  printf("Comando ricevuto per il device : %04x, comando : %c \n", c.address, c.command);
-			  sx1272.addCommand(c.address, c.command);
-		  }
-		  else {
+		  }else {
 			  packet.issueAddToDatabaseCommand();
 		  }
 		  //Added by Ivano 23/08/2016 -- look at this for the code to send the local database rows with lora
