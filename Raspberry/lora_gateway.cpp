@@ -1754,11 +1754,13 @@ bool sendDBContent(){
 		std::string postargs = "data=";
 		printf("about to write\n");
 		postargs.append(writer.write(item));
-		printf("written\n");
+		printf("written\n %s",postargs.c_str());
 		int res = 0;
 		if (curl) {
 			curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.0.31:8084/services/iot/sensor/set-sensor-data");
+			printf("url set");
 			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postargs.c_str());
+			pritnf("post fields set"):
 			//curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 			//curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 			res = curl_easy_perform(curl);
