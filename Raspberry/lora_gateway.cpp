@@ -949,15 +949,16 @@ void loop(void)
 
 		  //In caso ci servisse inviare comandi al LORA
 		  int a = 0;
-		  for (; a < 10; a++) {
+		  for (; a < 13; a++) {
 			  cmd[a] = (char)packet.data[a];
 		  }
 		  cmd[a] = '\0';
 
 		  //Stampa del pacchetto
 		  packet.printPacket();
-		  //qui viene fatto girare il comando nella shell di linux dove inserisce il messaggio appena creato nel database mongodb
-		  if (packet.isCommandPacket()) {
+		  if (cmd[10] == '&') {
+			  sendDBContent();
+		  }else if (packet.isCommandPacket()) {/*qui viene fatto girare il comando nella shell di linux dove inserisce il messaggio appena creato nel database mongodb*/
 			  Comando c = packet.getCommand();
 			  printf("Comando ricevuto per il device : %04x, comando : %c \n", c.address, c.command);
 			  sx1272.addCommand(c.address, c.command);
@@ -966,8 +967,7 @@ void loop(void)
 			  packet.issueAddToDatabaseCommand();
 		  }
 		  //Added by Ivano 23/08/2016 -- look at this for the code to send the local database rows with lora
-		  if(cmd[9]=='&')
-			sendDBContent();
+		  
 #if not defined ARDUINO && defined WINPUT
         // if we received something, display again the current input 
         // that has still not be terminated
