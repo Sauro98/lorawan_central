@@ -1774,7 +1774,7 @@ bool sendDBContent(){
 		}
 		else {
 			printf("curl failed \n");
-		}*/
+		}
 		if (res == 0) {
 			printf("packet sent succesfully, time to remove it from database\n");
 			removeFromDatabase(id);
