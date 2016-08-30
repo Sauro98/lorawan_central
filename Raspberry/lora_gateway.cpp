@@ -638,7 +638,7 @@ if (curl) {
 	res = curl_easy_perform(curl);
 	curl_easy_cleanup(curl);
 	printf("curl succesful\n");
-	//printf("curl result :  \n %s\n", readBuffer.c_str());
+	printf("curl result :  \n %s\n", readBuffer.c_str());
 }
 else {
 	printf("curl failed \n");
