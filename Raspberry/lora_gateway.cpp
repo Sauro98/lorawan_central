@@ -623,10 +623,40 @@ printf("\n");
 
 
 printf("----------Starting, add all subnodes----------\n");
-//Added by Ivano 225/08/2016
+//Added by Ivano 25/08/2016
 //Aggiungere qui i nodi voluti alla lista
 //Per ora aggiungo solo quello della pi2
-sx1272.addNode(/*NETWORK_ID*/0x4D << 25 | /*Network address*/ 0xC);
+//sx1272.addNode(/*NETWORK_ID*/0x4D << 25 | /*Network address*/ 0xC);
+//Modified by Ivano 30/08/2016
+//Prende i nodi che dipendono da lui dal database
+std::string readBuffer;
+curl = curl_easy_init();
+if (curl) {
+	curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.0.101:8084/services/iot/sensor/get-device-list?conc=1677721600");
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+	res = curl_easy_perform(curl);
+	curl_easy_cleanup(curl);
+	printf("curl succesful\n");
+	//printf("curl result :  \n %s\n", readBuffer.c_str());
+}
+else {
+	printf("curl failed \n");
+}
+
+Json::Value root;
+Json::Reader reader;
+Json::FastWriter writer;
+bool valid = reader.parse(readBuffer, root);
+if (valid) {
+	const Json::Value result = root["result"];
+	for (int a = 1; a < result.size(); a++) {
+		uint32_t node = result[a].get("address", "0").asInt();
+		printf("Adding node %04x \n", node);
+		sx1272.addNode(node);
+	}
+}
+
 printf("----------Nodes added-------------------------\n");
 }
 
