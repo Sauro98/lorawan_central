@@ -655,8 +655,7 @@ if (valid) {
 		printf("Adding node %04x \n", node);
 		sx1272.addNode(node);
 	}
-}
-else {
+}else {
 	printf("failed to retrieve json\n");
 }
 
