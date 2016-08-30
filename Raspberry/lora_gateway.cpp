@@ -651,7 +651,7 @@ bool valid = reader.parse(readBuffer, root);
 if (valid) {
 	const Json::Value result = root["result"];
 	for (int a = 1; a < result.size(); a++) {
-		uint32_t node = result[a].get("address", "0").asInt();
+		uint32_t node = atoi((result[a].get("address", "0").asString()).c_str());
 		printf("Adding node %04x \n", node);
 		sx1272.addNode(node);
 	}
