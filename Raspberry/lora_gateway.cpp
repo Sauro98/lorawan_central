@@ -1768,7 +1768,9 @@ bool sendDBContent(){
 	for (int a = 0; a < rows.size(); ++a) {
 		printf("--cycle %d\n",a+1);
 		Json::Value item = rows[a];
+		//remove mongodb object id from json
 		item.removeMember("_id");
+		//get the id created by me to eliminate row
 		std::string id = item.get("id", "").asString();
 		std::string postargs = "data=";
 		postargs.append(writer.write(item));
