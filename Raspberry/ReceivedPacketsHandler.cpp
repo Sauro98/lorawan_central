@@ -25,13 +25,12 @@ ReceivedPacket::ReceivedPacket(){
 	
 }
 
-ReceivedPacket::ReceivedPacket(pack originalPacket,int _gw_id,bool _debug) {
+ReceivedPacket::ReceivedPacket(pack originalPacket,bool _debug) {
 	debug = _debug;
 	if (debug) {
 		printf("\n----------START OF A NEW PACKET----------\n");
 	}
 	gatewaySenderID = originalPacket.src;
-	gw_id = _gw_id;
 	//salva il timestamp dell'orario di ricezione del pacchetto in formato AAAA-MM-GG OO-MM-SS
 	getTime();
 	receivedTime->tm_year = originalPacket.data[3];
@@ -62,8 +61,8 @@ ReceivedPacket::ReceivedPacket(pack originalPacket,int _gw_id,bool _debug) {
 	}
 }
 
-ReceivedPacket::ReceivedPacket(pack originalPacket, int _gw_id) {
-	ReceivedPacket(originalPacket, _gw_id, false);
+ReceivedPacket::ReceivedPacket(pack originalPacket) {
+	ReceivedPacket(originalPacket, false);
 }
 
 void ReceivedPacket::getTime() {
@@ -114,10 +113,8 @@ void ReceivedPacket::issueAddToDatabaseCommand() {
 std::string ReceivedPacket::generateID() {
 	char buffer[50];
 	std::string ID;
-	sprintf(buffer, "%d",gw_id);
-	ID = buffer;
 	sprintf(buffer, "%d", arduinoSenderID);
-	ID += buffer;
+	ID = buffer;
 	sprintf(buffer, "%d", sensorID);
 	ID += buffer;
 	sprintf(buffer, "%d", packetNumber);
@@ -198,6 +195,7 @@ std::string ReceivedPacket::generateJSON(){
 //parte di ricezione dei comandi
 
 bool ReceivedPacket::isCommandPacket() {
+	//sensor id == 95 significa che il primo carattere inserito da linea di comando è un undercore '_'
 	return sensorID == 95 && ((char)data[1] == '@');
 }
 

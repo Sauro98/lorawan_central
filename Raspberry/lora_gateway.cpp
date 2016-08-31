@@ -977,7 +977,7 @@ void loop(void)
 		  //param 1 : originalPacket : il pacchetto ricevuto dal lora
 		  //param 2 : _gw_id : l'identificativo del gateway nella rete
 		  //param 3 : _debug : settare a true per vedere i log di debug, a false per nasconderli. Se si omette questo parametro è automaticamente settato a false  
-		  ReceivedPacket packet = ReceivedPacket(sx1272.packet_received, GW_ID, false);
+		  ReceivedPacket packet = ReceivedPacket(sx1272.packet_received,false);
 
 		  //In caso ci servisse inviare comandi al LORA
 		  int a = 0;
@@ -991,9 +991,10 @@ void loop(void)
 		  if (packet.receivedTime->tm_year == 38) {
 			  sendDBContent();
 		  }else {
+			  //Added by Ivano 23/08/2016 -- look at this for the code to send the local database rows with lora
 			  packet.issueAddToDatabaseCommand();
 		  }
-		  //Added by Ivano 23/08/2016 -- look at this for the code to send the local database rows with lora
+		  
 		  
 #if not defined ARDUINO && defined WINPUT
         // if we received something, display again the current input 

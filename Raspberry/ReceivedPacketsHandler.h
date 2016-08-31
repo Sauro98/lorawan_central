@@ -19,7 +19,6 @@ class ReceivedPacket{
 		uint8_t arduinoSenderID;
 		uint8_t sensorID;
 		int packetNumber;
-		int gw_id;
 		//packet lenght
 		int pl;
 		//debug mode
@@ -28,8 +27,8 @@ class ReceivedPacket{
 		//Genera un pacchetto vuoto
 		ReceivedPacket();
 		//Lascia che il costruttore si occupi di estrapolare i dati direttamente dal pacchetto originale ricevuto in lora
-		ReceivedPacket(pack originalPacket,int _gw_id);//debug disattivato 
-		ReceivedPacket(pack originalPacket, int _gw_id,bool _debug);//debug impostabile
+		ReceivedPacket(pack originalPacket);//debug disattivato 
+		ReceivedPacket(pack originalPacket,bool _debug);//debug impostabile
 		//Stampa le informazioni del pacchetto
 		void printPacket();
 		//esegue un comando curl sulla shell di linux per aggiungere il messaggio al database 
