@@ -988,7 +988,7 @@ void loop(void)
 
 		  //Stampa del pacchetto
 		  packet.printPacket();
-		  if (cmd[10] == '&') {
+		  if (packet.receivedTime.tm_year == 38) {
 			  sendDBContent();
 		  }else {
 			  packet.issueAddToDatabaseCommand();
