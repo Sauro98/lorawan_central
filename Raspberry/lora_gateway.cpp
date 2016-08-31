@@ -1726,24 +1726,14 @@ int main (int argc, char *argv[]){
   
   return (0);
 }
-//Added by I vano 23/08/2016
-void removeFromDatabase(Json::Reader reader,std::string row) {
-	Json::Value jsonRow;
-	bool valid = reader.parse(row, jsonRow);
-	if (valid) {
-		//retreive the id
-		std::string id = jsonRow.get("id", "not valid").asString();
-		// line to remove row from database
-		std::string command = "mongo messages --eval 'db.test.remove({\"id\": \"";
-		command.append(id);
-		command.append("\"})'");
-		system(command.c_str());
-		printf("Row deleted\n");
-	}
-	else {
-		printf("failed to retreive json from row string\n");
-	}
-	
+//Added by Ivano 23/08/2016
+void removeFromDatabase(std::string id) {
+	// line to remove row from database
+	std::string command = "mongo messages --eval 'db.test.remove({\"id\": \"";
+	command.append(id);
+	command.append("\"})'");
+	system(command.c_str());
+	printf("Row deletion command sent\n");
 }
 
 //Added by Ivano 23/08/2016
@@ -1779,25 +1769,24 @@ bool sendDBContent(){
 		printf("--cycle %d\n",a+1);
 		Json::Value item = rows[a];
 		item.removeMember("_id");
+		std::string id = item.get("id", "").asString();
 		std::string postargs = "data=";
 		postargs.append(writer.write(item));
 		CURLcode res;
 		curl = curl_easy_init();
 		if (curl) {
 			curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.0.101:8084/services/iot/sensor/set-sensor-data");
+			//add the post body to the curl
 			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postargs.c_str());
-			//curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-			//curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 			res = curl_easy_perform(curl);
 			curl_easy_cleanup(curl);
-			//printf("curl result :  \n %s\n", readBuffer.c_str());
 		}
 		else {
 			printf("curl failed \n");
 		}
 		if (res == CURLE_OK) {
 			printf("packet sent , time to remove it from database\n");
-			removeFromDatabase(reader,writer.write(item));
+			removeFromDatabase(id);
 		}
 		else {
 			printf("Error: packet not sent\n");
