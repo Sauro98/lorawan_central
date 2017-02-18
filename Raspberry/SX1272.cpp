@@ -4202,9 +4202,9 @@ boolean	SX1272::availableData(uint16_t wait)
 		} // end while (millis)
 		if (bitRead(value, 4) == 1)
 		{ // header received
-#if (SX1272_debug_mode > 0)
+//#if (SX1272_debug_mode > 0)
 			printf("## Valid Header received in LoRa mode ##\n");
-#endif
+//#endif
 			_hreceived = true;
 			//Added by Ivano 24/08/206
 			//Togliere il commento al delay per inviare pacchetti più lunghi di 100 bytes
@@ -4246,10 +4246,10 @@ boolean	SX1272::availableData(uint16_t wait)
 		{
 			forme = false;
 			_hreceived = false;
-#if (SX1272_debug_mode > 0)
+//#if (SX1272_debug_mode > 0)
 			printf("** The timeout has expired **\n");
 			printf("\n");
-#endif
+//#endif
 		}
 	}
 	else
@@ -4288,9 +4288,9 @@ boolean	SX1272::availableData(uint16_t wait)
 	// updated and is not the _destination value from the previously packet
 	if (_hreceived == true)
 	{ // Checking destination
-#if (SX1272_debug_mode > 0)
+//#if (SX1272_debug_mode > 0)
 		printf("## Checking destination ##\n");
-#endif
+//#endif
 		// modified by Ivano loop through all subnets
 		bool found = false;
 		for (int a = 0; a < nodes_index; a++) { //loop through all nodes to see if the packet is from one of them
@@ -4304,9 +4304,9 @@ boolean	SX1272::availableData(uint16_t wait)
 
 		{ // LoRa or FSK mode
 			forme = true;
-#if (SX1272_debug_mode > 0)
+//#if (SX1272_debug_mode > 0)
 			printf("## Packet received is for me ##\n");
-#endif
+//#endif
 		}
 		else
 		{
