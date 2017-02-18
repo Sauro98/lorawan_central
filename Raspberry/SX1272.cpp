@@ -4292,8 +4292,10 @@ boolean	SX1272::availableData(uint16_t wait)
 		printf("## Checking destination ##\n");
 //#endif
 		// modified by Ivano loop through all subnets
+		printf("## RECEIVED DESTINATION %X, %d ##\n",_destination,_destination);
 		bool found = false;
 		for (int a = 0; a < nodes_index; a++) { //loop through all nodes to see if the packet is from one of them
+			printf("\t## CONFRONTO CON NODO %X, &d ##\n",nodes[a],nodes[a]);
 			if (MID(_destination,25,32) == MID(nodes[a],25,32)) {
 				if (MID(_destination,0,25) == 0x00 || MID(_destination, 0, 25) == MID(nodes[a], 0, 25)) {
 					found = true;
